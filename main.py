@@ -8,9 +8,11 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from instaloader import Instaloader, ConnectionException, Post
 from textblob import TextBlob
+from google.cloud import translate_v2 as translate
+
 
 def authenticate_to_instagram():
-    path_to_firefox_cookies = XXXPATH
+    path_to_firefox_cookies = "C:/Users/Owner/AppData/Roaming/Mozilla/Firefox/Profiles/qc3fw8f0.default-release/cookies.sqlite"
     FIREFOXCOOKIEFILE = glob(expanduser(path_to_firefox_cookies))[0]
 
     instaloader = Instaloader(max_connection_attempts=1)
@@ -34,6 +36,12 @@ def build_scraper():
                                     download_video_thumbnails=False, save_metadata=False, max_connection_attempts=0)
     instagram.load_session_from_file(XXXUSERNAME)
 
+
+def translate_text(text, target='en'):
+    translate_client = translate.Client()
+    result = translate_client.translate(text, target_language=target)
+    return result['translatedText']
+
 def scrape_data(url):
     SHORTCODE = str(url[28:39])
     post = Post.from_shortcode(instagram.context, SHORTCODE)
@@ -53,15 +61,23 @@ def scrape_data(url):
     post_writer = csv.DictWriter(post_file, fieldnames=field_names)
     post_writer.writeheader()
 
-    for x in post.get_comments():
-        post_info = {
-        "post_shortcode":post.shortcode,
-        "commenter_username": x.owner,
-        "comment_text": (emoji.demojize(x.text)).encode('utf-8', errors='ignore').decode() if x.text else "",
-        "comment_likes": x.likes_count
-        }
+    all_comments = set() 
 
-        post_writer.writerow(post_info)
+    for x in post.get_comments():
+        user_comment = (x.owner, x.text)  
+        comment_text = (emoji.demojize(x.text)).encode('utf-8', errors='ignore').decode() if x.text else ""
+
+        if not comment_text:
+            continue
+        if user_comment not in all_comments:
+            all_comments.add(user_comment)  
+            post_info = {
+                "post_shortcode": post.shortcode,
+                "commenter_username": x.owner,
+                "comment_text": (emoji.demojize(x.text)).encode('utf-8', errors='ignore').decode() if x.text else "",
+                "comment_likes": x.likes_count
+            }
+            post_writer.writerow(post_info)
 
     print("Done Scraping!")
 
@@ -78,7 +94,7 @@ def plot_sentiment_counts(df, shortcode):
     graph1 = df.groupby(['post_shortcode', 'sentiment']).count().reset_index()
     graph2 = graph1[graph1['post_shortcode'] == shortcode]
 
-    colors = colors=["#FF0066", "gray", "#00FF00"]
+    colors=["#FF0066", "gray", "#00FF00"]
 
     fig, ax = plt.subplots()
     for t, y, c in zip(graph2["sentiment"], graph2["comment_text"], colors):
