@@ -36,12 +36,6 @@ def build_scraper():
                                     download_video_thumbnails=False, save_metadata=False, max_connection_attempts=0)
     instagram.load_session_from_file(XXXUSERNAME)
 
-
-def translate_text(text, target='en'):
-    translate_client = translate.Client()
-    result = translate_client.translate(text, target_language=target)
-    return result['translatedText']
-
 def scrape_data(url):
     SHORTCODE = str(url[28:39])
     post = Post.from_shortcode(instagram.context, SHORTCODE)
