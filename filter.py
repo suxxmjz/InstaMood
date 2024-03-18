@@ -8,7 +8,6 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from instaloader import Instaloader, ConnectionException, Post
 from textblob import TextBlob
-from google.cloud import translate_v2 as translate
 
 
 def authenticate_to_instagram():
