@@ -1,0 +1,3 @@
+shortcode = ""
+username = ""
+fireFoxPath  = ""
