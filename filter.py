@@ -6,7 +6,6 @@ import pathlib
 import csv
 import emoji
 import pandas as pd
-from matplotlib import pyplot as plt
 from instaloader import Instaloader, ConnectionException, Post
 from textblob import TextBlob
 
@@ -50,7 +49,7 @@ def scrape_data(shortcode):
         "commenter_username",
         "comment_text",
         "comment_likes",
-        "comment_timestamp"  # Added field for timestamp
+        "comment_timestamp"
     ]
 
     post_writer = csv.DictWriter(post_file, fieldnames=field_names)
@@ -71,7 +70,7 @@ def scrape_data(shortcode):
                 "commenter_username": x.owner,
                 "comment_text": comment_text,
                 "comment_likes": x.likes_count,
-                "comment_timestamp": x.created_at_utc  # Format timestamp
+                "comment_timestamp": x.created_at_utc
             }
             post_writer.writerow(post_info)
 
