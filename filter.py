@@ -1,4 +1,3 @@
-import datetime
 from glob import glob
 from os.path import expanduser
 from sqlite3 import connect
