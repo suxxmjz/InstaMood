@@ -8,6 +8,9 @@ def plotGraphs(df, shortcode):
 
     scatter_name =  f'{shortcode}_scatter.png'
     bar_name = f'{shortcode}_bar.png'
+
+    if not os.path.exists('static'):
+        os.makedirs('static')
     
     plotScatter(df, shortcode, scatter_path)
     plotBar(df, shortcode, bar_path)
