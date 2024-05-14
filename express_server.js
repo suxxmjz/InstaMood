@@ -7,7 +7,7 @@ const { SuperfaceClient } = require('@superfaceai/one-sdk');
 require('dotenv').config();
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 const superface = new SuperfaceClient();
 
 passport.serializeUser(function (user, done) {
@@ -33,7 +33,7 @@ passport.use(
 
 app.use(
     session({
-        secret: 'secret',
+        secret: 'keyboard cat',
         resave: false,
         saveUninitialized: true,
     })
@@ -73,11 +73,10 @@ app.get('/auth/facebook/callback',
             `);
             next();
         } catch (err) {
-          next(err);
-        }
+        } //add error handling
       }
     );
 
-app.listen(3000, () => {
+app.listen(3001, () => {
     console.log(`Listening on ${process.env.BASE_URL}`);
 });

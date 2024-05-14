@@ -3,3 +3,4 @@ venv
 vars.py
 __pycache__
 static
+node_modules
