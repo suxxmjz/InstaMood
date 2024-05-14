@@ -33,7 +33,7 @@ passport.use(
 
 app.use(
     session({
-        secret: 'keyboard cat',
+        secret: 'secret',
         resave: false,
         saveUninitialized: true,
     })
