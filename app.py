@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for
 import pandas as pd
 from filter import authenticate_to_instagram, build_scraper, scrape_data, add_sentiment
 from plot import plotGraphs
-import vars
 
 app = Flask(__name__)
 
