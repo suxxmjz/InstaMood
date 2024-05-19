@@ -1,0 +1,46 @@
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+
+.plots {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.center-link {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    color: #ffffff;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+}

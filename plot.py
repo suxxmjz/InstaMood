@@ -3,29 +3,28 @@ import pandas as pd
 import os
 
 def plotGraphs(df, shortcode):
+    pie_path = f'static/{shortcode}_pie.png'
     scatter_path = f'static/{shortcode}_scatter.png'
-    bar_path = f'static/{shortcode}_bar.png'
 
-    scatter_name =  f'{shortcode}_scatter.png'
-    bar_name = f'{shortcode}_bar.png'
+    pie_name =  f'{shortcode}_pie.png'
+    scatter_name = f'{shortcode}_scatter.png'
 
     if not os.path.exists('static'):
         os.makedirs('static')
     
-    plotScatter(df, shortcode, scatter_path)
-    plotBar(df, shortcode, bar_path)
+    plotPie(df, shortcode, pie_path)
+    plotBar(df, shortcode, scatter_path)
     
-    return scatter_name, bar_name
+    return pie_name, scatter_name
 
-def plotScatter(df, shortcode, fig_path):
-    plt.figure(figsize=(10, 6))
+def plotPie(df, shortcode, fig_path):
     polarity_counts = df.groupby('sentiment').size()
-    polarity_counts.plot(kind='bar', alpha=0.6)
+
+    colors = ['#ff9999', '#66b3ff', '#99ff99']
+
+    plt.figure(figsize=(8, 8))
+    plt.pie(polarity_counts, labels=polarity_counts.index, autopct='%1.1f%%', startangle=90, colors=colors)
     plt.title(f"Number of Comments vs. Sentiment for Post {shortcode}", fontsize=15)
-    plt.xlabel("Sentiment Polarity", fontsize=12)
-    plt.ylabel("Number of Comments", fontsize=12)
-    plt.xticks(rotation=45)
-    plt.tight_layout()
     plt.savefig(fig_path)
     plt.close()
 
