@@ -23,13 +23,13 @@ def export_images():
     zip_buffer = io.BytesIO()
 
     with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
-        pie_image_data = open("/static/" + pie_path, 'rb').read()
+        pie_image_data = open("static/" + pie_path, 'rb').read()
         zip_file.writestr('pie_image.png', pie_image_data)
 
-        scatter_image_data = open("/static/" + scatter_path, 'rb').read()
+        scatter_image_data = open("static/" + scatter_path, 'rb').read()
         zip_file.writestr('scatter_image.png', scatter_image_data)
     zip_buffer.seek(0)
-    return send_file(zip_buffer, mimetype='application/zip', as_attachment=True, attachment_filename='images.zip')
+    return send_file(zip_buffer, mimetype='application/zip', as_attachment=True, download_name='imageData.zip')
 
 @app.route('/authenticate')
 def authenticate():

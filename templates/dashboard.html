@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-    <link rel="stylesheet" type="text/css" href="/styles/styles.css">
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
 </head>
 
 <body>
@@ -53,7 +53,10 @@
 
     <script>
         document.getElementById('exportBtn').addEventListener('click', function () {
-            fetch(`/export_images?pie_path=${encodeURIComponent('{{ pie_image }}')}&scatter_path=${encodeURIComponent('{{ scatter_image }}')}`)
+            const pieImagePath = `${encodeURIComponent('{{ pie_image }}')}`;
+            const scatterImagePath = `${encodeURIComponent('{{ scatter_image }}')}`;
+
+            fetch(`/export_images?pie_path=${pieImagePath}&scatter_path=${scatterImagePath}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Failed to export images');
@@ -72,6 +75,8 @@
                 });
         });
     </script>
+
+
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
