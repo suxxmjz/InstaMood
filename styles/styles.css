@@ -2,6 +2,7 @@
     --primary-color: #007bff;
     --primary-color-hover: #0056b3;
     --arrow-color: #ffffff;
+    --grey: #c7c9ca;
 }
 
 body {
@@ -61,4 +62,12 @@ img {
     width: 100%;
     height: auto;
     object-fit: cover;
+}
+
+.carousel-indicators li {
+    background-color: var(--grey);
+}
+
+.carousel-indicators .active {
+    background-color: var(--primary-color);
 }

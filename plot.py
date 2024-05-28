@@ -24,7 +24,7 @@ def plotPie(df, shortcode, fig_path):
 
     plt.figure(figsize=(8, 8))
     plt.pie(polarity_counts, labels=polarity_counts.index, autopct='%1.1f%%', startangle=90, colors=colors)
-    plt.title(f"Number of Comments vs. Sentiment for Post {shortcode}", fontsize=15)
+    plt.title(f"Sentiment Ratios for Post {shortcode}", fontsize=15)
     plt.savefig(fig_path)
     plt.close()
 
