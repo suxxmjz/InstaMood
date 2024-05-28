@@ -1,0 +1,73 @@
+:root {
+    --primary-color: #007bff;
+    --primary-color-hover: #0056b3;
+    --arrow-color: #ffffff;
+    --grey: #c7c9ca;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.plots {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.center-link {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    background-color: transparent;
+    border: none;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    background-color: transparent;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: var(--primary-color);
+    border-radius: 10%;
+    width: 20px;
+    height: 40px;
+}
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+    background-color: var(--primary-color-hover);
+}
+
+.carousel-inner {
+    height: 600px;
+    width: 100%;
+    max-width: 700px;
+    margin: auto;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.carousel-indicators li {
+    background-color: var(--grey);
+}
+
+.carousel-indicators .active {
+    background-color: var(--primary-color);
+}
