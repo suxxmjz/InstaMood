@@ -1,4 +1,6 @@
+import matplotlib
 from matplotlib import pyplot as plt
+matplotlib.use('Agg')
 import pandas as pd
 import os
 
@@ -29,7 +31,7 @@ def plotPie(df, shortcode, fig_path):
     plt.close()
 
 def plotBar(df, shortcode, fig_path):
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(10, 8))
     plt.scatter(df['comment_timestamp'], df['text_polarity'], alpha=0.6)
     plt.title(f"Sentiment Polarity Over Time for Post {shortcode}", fontsize=15)
     plt.xlabel("Comment Timestamp", fontsize=12)
