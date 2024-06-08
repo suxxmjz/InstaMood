@@ -45,10 +45,14 @@ def enter_post_id():
         post_id = request.form['post_id']
         return redirect(url_for('dashboard', post_id=post_id, username=username, access_token=access_token, ig_username=ig_username))
     
-    return render_template('enterPost.html')
+    return render_template('enterPost.html', username=username, access_token=access_token, ig_username=ig_username)
+
 @app.route('/dashboard')
 def dashboard():
     post_id = request.args.get('post_id')
+    username = request.args.get('username')
+    access_token = request.args.get('access_token')
+    ig_username = request.args.get('ig_username')
     if post_id is None:
         return "Error: No post ID provided."
 

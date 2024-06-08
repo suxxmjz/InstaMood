@@ -7,6 +7,7 @@ import emoji
 import pandas as pd
 from instaloader import Instaloader, ConnectionException, Post
 from textblob import TextBlob
+import vars 
 
 instagram = None
 
@@ -32,9 +33,13 @@ def authenticate_to_instagram(firefox_cookie_path):
 
 def build_scraper():
     global instagram
+    if instagram is None:
+        raise ValueError("Instagram scraper not initialized. Call authenticate_to_instagram first.")
 
 def scrape_data(shortcode):
     global instagram
+    if instagram is None:
+        raise ValueError("Instagram scraper not initialized. Call build_scraper first.")
 
     SHORTCODE = shortcode
     post = Post.from_shortcode(instagram.context, SHORTCODE)
