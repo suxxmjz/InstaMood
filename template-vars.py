@@ -1,4 +1,8 @@
-#create a file called "vars.py" and add the following variables:
+#create a file called "vars.py" and copy the following:
+import os
+
 shortcode = ""
 username = ""
-fireFoxPath = ""
+
+fireFoxProfile = "%APPDATA%/Mozilla/Firefox/Profiles/qc3fw8f0.default-release/cookies.sqlite"
+fireFoxPath = os.path.expandvars(fireFoxProfile)
