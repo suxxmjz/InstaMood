@@ -2,9 +2,6 @@
 import os
 import glob
 
-shortcode = ""
-username = ""
-
 firefox_profiles = os.path.expandvars("%APPDATA%/Mozilla/Firefox/Profiles/")
 profile_name = os.path.join(firefox_profiles, "*.default-release")
 full_path = glob.glob(profile_name)

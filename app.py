@@ -34,7 +34,6 @@ def export_images():
 @app.route('/authenticate')
 def authenticate():
     authenticate_to_instagram(vars.fireFoxPath)
-    return render_template('authentication.html')
 
 @app.route('/enter_post_id', methods=['GET', 'POST'])
 def enter_post_id():

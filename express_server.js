@@ -21,7 +21,7 @@ passport.use(
         {
             clientID: process.env.FACEBOOK_CLIENT_ID,
             clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-            callbackURL: `http://localhost:3001/auth/facebook/callback`,
+            callbackURL: `${process.env.BASE_URL}/auth/facebook/callback`,
             enableProof: true
         },
         async (accessToken, refreshToken, profile, done) => {
@@ -40,10 +40,11 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(express.static(path.join(__dirname, 'styles')));
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'templates', 'index.html'));
 });
-
 
 app.get('/auth/facebook', passport.authenticate('facebook', {
     scope: ['pages_show_list', 'instagram_basic', 'instagram_content_publish', 'instagram_manage_insights', 'business_management'],
