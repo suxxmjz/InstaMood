@@ -4,6 +4,7 @@ const passport = require('passport');
 const { Strategy } = require('passport-facebook');
 const fetch = require('node-fetch');
 require('dotenv').config();
+const path = require('path');
 
 const app = express();
 const PORT = 3001;
@@ -40,8 +41,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/', (req, res) => {
-    res.send('<h1>Welcome to App</h1><a href="/auth/facebook">Login with Facebook</a>');
+    res.sendFile(path.join(__dirname, 'templates', 'index.html'));
 });
+
 
 app.get('/auth/facebook', passport.authenticate('facebook', {
     scope: ['pages_show_list', 'instagram_basic', 'instagram_content_publish', 'instagram_manage_insights', 'business_management'],
