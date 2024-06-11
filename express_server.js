@@ -2,21 +2,20 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const { Strategy } = require('passport-facebook');
-const path = require('path');
-const { SuperfaceClient } = require('@superfaceai/one-sdk');
+const fetch = require('node-fetch');
 require('dotenv').config();
+const path = require('path');
 
 const app = express();
 const PORT = 3001;
-const superface = new SuperfaceClient();
 
 passport.serializeUser(function (user, done) {
     done(null, user);
-  });
+});
 passport.deserializeUser(function (obj, done) {
     done(null, obj);
-  });
-  
+});
+
 passport.use(
     new Strategy(
         {
@@ -26,7 +25,7 @@ passport.use(
             enableProof: true
         },
         async (accessToken, refreshToken, profile, done) => {
-            done(null, { accessToken, profile });
+            return done(null, { accessToken, profile });
         }
     )
 );
@@ -41,42 +40,53 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(express.static(path.join(__dirname, 'styles')));
+
 app.get('/', (req, res) => {
-    res.send('<h1>Welcome to App</h1><a href="/auth/facebook">Login with Facebook</a>');
+    res.sendFile(path.join(__dirname, 'templates', 'index.html'));
 });
 
 app.get('/auth/facebook', passport.authenticate('facebook', {
-    scope: ['pages_show_list', 'instagram_basic', 'instagram_content_publish'],
+    scope: ['pages_show_list', 'instagram_basic', 'instagram_content_publish', 'instagram_manage_insights', 'business_management'],
 }));
 
 app.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/' }),
     async (req, res) => {
+        if (!req.user) {
+            return res.redirect('/');
+        }
+
+        const accessToken = req.user.accessToken;
+        const profile = req.user.profile;
+
         try {
-            const accessToken = req.user.accessToken;
-            const profileUseCase = await superface.getProfile('social-media/publishing-profiles@1.0.1');
-            const result = await profileUseCase.getUseCase('GetProfilesForPublishing').perform({}, {
-                provider: 'instagram',
-                parameters: {
-                    accessToken,
-                },
-            });
+            const igAccountsUrl = `https://graph.facebook.com/v14.0/me/accounts?fields=instagram_business_account{name,username,profile_picture_url}&access_token=${accessToken}`;
+            const response = await fetch(igAccountsUrl);
+            const data = await response.json();
 
-            const profiles = result.unwrap();
+            if (!data.data || data.data.length === 0) {
+                throw new Error('No Instagram accounts found.');
+            }
 
-            res.send(`
-                <h1>Authentication succeeded</h1>
-                <h2>User data</h2>
-                <pre>${JSON.stringify(req.user, undefined, 2)}</pre>
-                <h2>Instagram profiles</h2>
-                <pre>${JSON.stringify(profiles, undefined, 2)}</pre>
-            `);
-            next();
-        } catch (err) {
-        } //add error handling
-      }
-    );
+            const instagramAccounts = data.data
+                .map(account => account.instagram_business_account)
+                .filter(account => account);
 
-app.listen(3001, () => {
-    console.log(`Listening on ${process.env.BASE_URL}`);
+            if (instagramAccounts.length === 0) {
+                throw new Error('No Instagram accounts found.');
+            }
+
+            req.session.instagramAccounts = instagramAccounts;
+
+            const instagramAccount = instagramAccounts[0];
+            res.redirect(`http://localhost:5000/enter_post_id?username=${profile.displayName}&access_token=${accessToken}&ig_username=${instagramAccount.username}`);
+        } catch (error) {
+            res.status(500).send('<h1>Error fetching Instagram accounts</h1><p>Please try again later.</p>');
+        }
+    }
+);
+
+app.listen(PORT, () => {
+    console.log(`Listening on http://localhost:${PORT}`);
 });

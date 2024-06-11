@@ -7,34 +7,40 @@ import emoji
 import pandas as pd
 from instaloader import Instaloader, ConnectionException, Post
 from textblob import TextBlob
+import vars 
 
+instagram = None
 
-def authenticate_to_instagram(path):
-    path_to_firefox_cookies = path
-    FIREFOXCOOKIEFILE = glob(expanduser(path_to_firefox_cookies))[0]
-
-    instaloader = Instaloader(max_connection_attempts=1)
-    instaloader.context._session.cookies.update(connect(FIREFOXCOOKIEFILE)
-                                                .execute("SELECT name, value FROM moz_cookies "
-                                                        "WHERE host='.instagram.com'"))
-    
-    try:
-        username = instaloader.test_login()
-        if not username:
-            raise ConnectionException()
-    except ConnectionException:
-        raise SystemExit("Cookie import failed. Are you logged in successfully in Firefox?")
-    
-    instaloader.context.username = username
-    instaloader.save_session_to_file()
-
-def build_scraper(username):
+def authenticate_to_instagram(firefox_cookie_path):
     global instagram
-    instagram = Instaloader(download_pictures=False, download_videos=False,
-                                    download_video_thumbnails=False, save_metadata=False, max_connection_attempts=0)
-    instagram.load_session_from_file(username)
+    instagram = Instaloader(max_connection_attempts=1)
+    
+    FIREFOXCOOKIEFILE = glob(expanduser(firefox_cookie_path))[0]
+    conn = connect(FIREFOXCOOKIEFILE)
+    cookies = conn.execute("SELECT name, value FROM moz_cookies WHERE host='.instagram.com'")
+    for name, value in cookies:
+        instagram.context._session.cookies.set(name, value)
+
+    try:
+        username = instagram.test_login()
+        if not username:
+            raise ConnectionException("Cookie import failed. Are you logged in successfully in Firefox?")
+    except ConnectionException as e:
+        raise SystemExit(e)
+    
+    instagram.context.username = username
+    instagram.save_session_to_file()
+
+def build_scraper():
+    global instagram
+    if instagram is None:
+        raise ValueError("Instagram scraper not initialized. Call authenticate_to_instagram first.")
 
 def scrape_data(shortcode):
+    global instagram
+    if instagram is None:
+        raise ValueError("Instagram scraper not initialized. Call build_scraper first.")
+
     SHORTCODE = shortcode
     post = Post.from_shortcode(instagram.context, SHORTCODE)
 
@@ -75,11 +81,11 @@ def scrape_data(shortcode):
 
     print("Done Scraping!")
 
-def getPolarity(text):
+def get_polarity(text):
     return TextBlob(text).sentiment.polarity
 
 def add_sentiment(shortcode):
     df = pd.read_csv('post_data/' + shortcode + '.csv')
-    df['text_polarity'] = df['comment_text'].apply(getPolarity)
+    df['text_polarity'] = df['comment_text'].apply(get_polarity)
     df['sentiment'] = pd.cut(df['text_polarity'], [-1, -0.0000000001, 0.0000000001, 1], labels=["Negative", "Neutral", "Positive"])
     df.to_csv('post_data/' + shortcode + '.csv', index=False)

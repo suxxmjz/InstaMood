@@ -34,24 +34,26 @@ def export_images():
 @app.route('/authenticate')
 def authenticate():
     authenticate_to_instagram(vars.fireFoxPath)
-    build_scraper(vars.username)
-    return render_template('authentication.html')
 
 @app.route('/enter_post_id', methods=['GET', 'POST'])
 def enter_post_id():
+    username = request.args.get('username')
+    access_token = request.args.get('access_token')
+    ig_username = request.args.get('ig_username')
     if request.method == 'POST':
         post_id = request.form['post_id']
-        
-        return redirect(url_for('dashboard', post_id=post_id))
+        return redirect(url_for('dashboard', post_id=post_id, username=username, access_token=access_token, ig_username=ig_username))
     
-    return render_template('enterPost.html')
+    return render_template('enterPost.html', username=username, access_token=access_token, ig_username=ig_username)
 
 @app.route('/dashboard')
 def dashboard():
     post_id = request.args.get('post_id')
     if post_id is None:
         return "Error: No post ID provided."
-    
+
+    authenticate_to_instagram(vars.fireFoxPath)
+    build_scraper()
     scrape_data(post_id)
     add_sentiment(post_id)
     df = pd.read_csv(f'post_data/{post_id}.csv')
@@ -60,4 +62,4 @@ def dashboard():
     return render_template('dashboard.html', pie_image=pie_path, scatter_image=scatter_path)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5000)
