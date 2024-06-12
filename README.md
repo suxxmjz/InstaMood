@@ -30,7 +30,7 @@ InstaMood is an application that analyzes your Instagram posts' comments. Just e
   
 10. your post's sentiment analysis will be available in both a pie chart for the sentiment ratios and a scatter plot for how sentiments evolve over time
 
-https://github.com/suxxmjz/InstaMood/assets/92133996/0051b3e2-0ae6-4f78-88bb-27788dffed1e
+![Post Dashboard - Google Chrome 2024-06-11 00-28-17 - Trim](https://github.com/suxxmjz/InstaMood/assets/92133996/db6f5dcc-de92-4612-8c26-f4b09f05c114)
 
 11. click on Export Images to export the two graphs as .png files for future references
 
