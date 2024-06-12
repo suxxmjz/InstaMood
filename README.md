@@ -6,21 +6,25 @@ InstaMood is an application that analyzes your Instagram posts' comments. Just e
 
 # How to use
 
-1. follow this link to create a Facebook page that will be linked to the Instagram account https://help.instagram.com/570895513091465
+1. create a Facebook page using your Facebook account using https://www.facebook.com/pages/create/
 
-2. create a Facebook developer account and follow this link to set it up https://superface.ai/blog/instagram-login
+2. change the Instagram account that you want your Facebook page to be linked to into an Instagram Business account using https://help.instagram.com/502981923235522
 
-3. once you have the Facebook client ID and secret, add them to the .env file
+3. connect the Instagram Business account to your Facebook page using https://superface.ai/blog/instagram-setup?utm_source=blog&utm_medium=link&utm_campaign=instagram-login
 
-4. run node express_server.js
+4. create a Facebook developer account and follow this link to set it up https://superface.ai/blog/instagram-login
 
-5. run python app.py
+5. once you have the Facebook App ID and secret, add them to the .env file
 
-6. go to http://localhost:3001/
+6. in your IDE run ```node express_server.js``` in one terminal
 
-7. authenticate using the Facebook account and the Instagram account linked to it
+7. in another terminal, run ```python app.py```
 
-8. once authenticated, enter your Instagram post's shortcode from the post's URL
+8. go to http://localhost:3001/
+
+9. authenticate using the Facebook account and the Instagram account linked to it
+
+10. once authenticated, enter your Instagram post's shortcode from the post's URL
 
 ![image](https://github.com/suxxmjz/InstaMood/assets/92133996/0dfe2098-ac62-4b4d-832e-fb98bb975c04)
 
