@@ -1,3 +1,4 @@
+# Code adapted from Kinnaird, M. (2021). Scraping and Plotting Sentiment of an Instagram Comment Section. Retrieved from https://github.com/madelinekinnaird/instagram-sentiment-tutorial
 from glob import glob
 from os.path import expanduser
 from sqlite3 import connect

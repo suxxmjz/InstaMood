@@ -1,3 +1,4 @@
+# Code adapted from Kinnaird, M. (2021). Scraping and Plotting Sentiment of an Instagram Comment Section. Retrieved from https://github.com/madelinekinnaird/instagram-sentiment-tutorial
 import matplotlib
 from matplotlib import pyplot as plt
 matplotlib.use('Agg')

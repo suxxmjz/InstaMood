@@ -1,3 +1,4 @@
+# Code adapted from Kinnaird, M. (2021). Scraping and Plotting Sentiment of an Instagram Comment Section. Retrieved from https://github.com/madelinekinnaird/instagram-sentiment-tutorial
 from flask import Flask, render_template, request, redirect, url_for, send_file, send_from_directory
 import pandas as pd
 from filter import authenticate_to_instagram, build_scraper, scrape_data, add_sentiment
