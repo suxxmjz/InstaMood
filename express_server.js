@@ -1,3 +1,4 @@
+// Code adapted from Vlnas, J. (2023). Instagram Graph API Explained: How to log in users. Retrieved from https://superface.ai/blog/instagram-login
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
